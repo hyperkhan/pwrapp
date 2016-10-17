@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+
+		<title>PowerMeApp</title>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+
+		<link rel="stylesheet" src="text/css" href="pwrapp.css"/>
+
+		<link href="https://fonts.googleapis.com/css?family=Oswald|Noto+Serif:400,700" rel="stylesheet">
+
+</head>
+
+
+
+<body>
+
+		<h1 class="logo">LOGO</h1>
+
+		<p class="Boost">Boost your confidence with 3 POWER POSES, in 3 minutes</p>
+
+		<a href="#" class="start" id="startClock">START</a>
+
+		<p  class="hidden" id="counter"></p>
+	<ul id="countdown">
+		<li style="list-style: none; text-align: center" class="hidden" id="1"><img src="poseimgs/pp1.png"></li>
+		<li style="list-style: none; text-align: center" class="hidden" id="2"></li>
+		<li style="list-style: none; text-align: center" class="hidden" id="3"><img src="poseimgs/pp2.png"></li>
+		<li style="list-style: none; text-align: center" class="hidden" id="3"><img src="poseimgs/pp3.png"></li>
+	</ul>
+	
+	<div class="hidden" id="end">
+		<p>Go on. You good.<p>
+	</div>
+
+
+		<p class="readMore">
+		<a href="poseinfo.html"><u>Read more</u></a> about power poses.
+			<br>
+			<br>
+			<br>
+		See the <a href="https://www.ted.com/speakers/amy_cuddy"><u>TEDtalk</u></a> about power poses.
+		</p>
+
+
+<div id="share-buttons">
+
+		<!-- Facebook -->
+    <a href="http://www.facebook.com/sharer.php?u=https://www.facebook.com/" target="_blank">
+        <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
+    </a>
+
+    <!-- Twitter -->
+    <a href="https://twitter.com/share?url=https://twitter.com/&amp;text=Simple%20Share%20Buttons&amp;hashtags=simplesharebuttons" target="_blank">
+        <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+    </a>
+
+        <!-- Google+ -->
+    <a href="https://plus.google.com/share?url=https://plus.google.com/" target="_blank">
+        <img src="https://simplesharebuttons.com/images/somacro/google.png" alt="Google" />
+    </a>
+
+    <!-- LinkedIn -->
+    <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://www.linkedin.com/" target="_blank">
+        <img src="https://simplesharebuttons.com/images/somacro/linkedin.png" alt="LinkedIn" />
+    </a>
+
+</div>
+
+		<script>
+
+			$("#startClock").click(function() {
+				
+				$(this).hide(); //hides button after clicking
+
+				// See you can reuse images and show them multiple times.
+				var data = [
+					{id: "1", timeout: 2},
+					{id: "2", countdown: true, timeout: 5},
+					{id: "3", timeout: 2},
+					{id: "2", countdown: true, timeout: 5},
+					{id: "4", timeout: 2},
+				]
+
+				countdownLoop(data, 0, data[0].timeout)
+
+				// params:
+				// data = all data we need
+				// index which slide we are on right now
+				// timeLeft. Number of seconds we have left before we should change image.
+				//
+				// Start by calling this function with timeLeft as the number of seconds you want to have for this image.
+				// It will call itself over and over and always decrease timeLeft with one
+				// Until it is 0.
+				// Then it will call it self, with index + 1 (aka next image)
+				// and timeLeft with the timeout time for that image
+
+				function countdownLoop(data, index, timeLeft) {
+					var id = data[index].id
+
+					$("#" + id).removeClass("hidden")
+					// Should we show the counter?
+					if (data[index].countdown) {
+						$("#counter").removeClass("hidden")
+					}
+					$("#counter").text(timeLeft)
+
+					setTimeout(function() {
+						if (timeLeft > 0) {
+							// stil time left
+
+							// Update the counter
+							// See http://api.jquery.com/text/
+							$("#counter").text(timeLeft)
+
+							// Recursively call this function with less time left.
+							countdownLoop(data, index, timeLeft - 1)
+						} else {
+							// we are done with this image. Hide all components
+							$("#" + id).addClass("hidden")
+							$("#counter").addClass("hidden")
+
+							if (index + 1 < data.length) {
+								// We have more images to show.
+								// index + 1 tells it to show the next image
+								countdownLoop(data, index + 1, data[index+1].timeout)
+							} else {
+								// last image
+								// we stop here
+								$("#end").removeClass("hidden")
+							}
+						}
+					}, 1000)
+				}
+			})
+		</script>
+
+
+</body>
+</html>
